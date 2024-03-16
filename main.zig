@@ -6,10 +6,8 @@ fn map(value: f32, from: struct { f32, f32 }, to: struct { f32, f32 }) f32 {
     return math.min(math.max(mapped, to[0]), to[1]);
 }
 
-fn escapeTime(c: @TypeOf(math.Complex(f32))) ?u32 {
+fn escapeTime(c: @TypeOf(math.Complex(f32)), max_iterations: u32) ?u32 {
     var z = math.Complex(f32){ .re = 0, .im = 0 };
-
-    const max_iterations = 1000;
 
     for (0..max_iterations) |i| {
         if (z.magnitude() > 4.0) {
