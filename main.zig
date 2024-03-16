@@ -14,7 +14,7 @@ fn escapeTime(c: @TypeOf(math.Complex(f32)), max_iterations: u32) ?u32 {
             return i;
         }
 
-        z = z * z + c;
+        z = z.mul(z).add(c);
     }
 }
 
