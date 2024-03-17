@@ -29,8 +29,6 @@ fn escapeTime(c: anytype, max_iterations: usize) ?usize {
 pub fn main() !void {
     const screenWidth = 800;
     const screenHeight = 450;
-    const pixelSize = 5;
-    _ = pixelSize;
     const max_iterations = 1000;
 
     rl.initWindow(screenWidth, screenHeight, "Mandelbrot Set");
