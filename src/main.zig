@@ -15,9 +15,9 @@ fn escapeTime(c: anytype, max_iterations: usize) ?usize {
 
     var z = math.Complex(f64){ .re = 0.0, .im = 0.0 };
 
-    for (0..max_iterations) |i| {
+    for (0..max_iterations) |iteration| {
         if (z.magnitude() > 4.0) {
-            return i;
+            return iteration;
         }
 
         z = z.mul(z).add(c);
@@ -27,11 +27,17 @@ fn escapeTime(c: anytype, max_iterations: usize) ?usize {
 }
 
 pub fn main() !void {
-    const screenWidth = 800;
-    const screenHeight = 450;
-    const max_iterations = 1000;
+    const screen_width = 1280;
+    const screen_height = 730;
 
-    rl.initWindow(screenWidth, screenHeight, "Mandelbrot Set");
+    const max_iterations = 255;
+    const re_start = -2.0;
+    const re_end = 0.47;
+    const im_start = -1.12;
+    const im_end = 1.12;
+
+    const foreground_color = rl.Color.init(0xe9, 0x1e, 0x63, 255);
+    rl.initWindow(screen_width, screen_height, "Mandelbrot Set");
     defer rl.closeWindow();
 
     rl.setTargetFPS(60);
@@ -40,16 +46,17 @@ pub fn main() !void {
         rl.beginDrawing();
         defer rl.endDrawing();
 
-        rl.clearBackground(rl.Color.black);
+        rl.clearBackground(foreground_color);
 
-        for (0..screenWidth) |x| {
-            for (0..screenHeight) |y| {
-                const px = map(@floatFromInt(x), .{ 0, screenWidth }, .{ -2.0, 0.47 });
-                const py = map(@floatFromInt(y), .{ 0, screenHeight }, .{ -1.12, 1.12 });
+        for (0..screen_width) |x| {
+            for (0..screen_height) |y| {
+                const px = map(@floatFromInt(x), .{ 0, screen_width }, .{ re_start, re_end });
+                const py = map(@floatFromInt(y), .{ 0, screen_height }, .{ im_start, im_end });
                 const c = math.Complex(f64){ .re = px, .im = py };
 
-                if (escapeTime(c, max_iterations)) |_| {
-                    rl.drawPixel(@as(i32, @intCast(x)), @as(i32, @intCast(y)), rl.Color.white);
+                if (escapeTime(c, max_iterations)) |iterations| {
+                    var color: u8 = @intCast(max_iterations - iterations);
+                    rl.drawPixel(@as(i32, @intCast(x)), @as(i32, @intCast(y)), rl.Color.init(color, color, color, color));
                 }
             }
         }
