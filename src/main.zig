@@ -10,7 +10,7 @@ fn map(value: f32, from: struct { f32, f32 }, to: struct { f32, f32 }) f32 {
 
 fn escapeTime(c: anytype, max_iterations: usize) ?usize {
     if (@TypeOf(c) != math.Complex(f64)) {
-        return;
+        return null;
     }
 
     var z = math.Complex(f64){ .re = 0.0, .im = 0.0 };
