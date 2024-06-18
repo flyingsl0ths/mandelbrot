@@ -55,7 +55,7 @@ pub fn main() !void {
                 const c = math.Complex(f64){ .re = px, .im = py };
 
                 if (escapeTime(c, max_iterations)) |iterations| {
-                    var color: u8 = @intCast(max_iterations - iterations);
+                    const color: u8 = @intCast(max_iterations - iterations);
                     rl.drawPixel(@as(i32, @intCast(x)), @as(i32, @intCast(y)), rl.Color.init(color, color, color, color));
                 }
             }
